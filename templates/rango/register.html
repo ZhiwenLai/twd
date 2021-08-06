@@ -1,0 +1,48 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Register
+{% endblock %}
+
+
+{% block css %}
+<style type="text/css">
+#id_website{
+    color: black;
+}
+</style>
+{% endblock %}
+
+{% block body_block %}
+<div class="container-fluid "  style="background-image: url({% static 'images/dog2.jpg' %});background-size: 100% 100%;height: 700px;color: white;">
+
+    <h1 style="text-align: center">Register for Rango</h1>
+    {% if registered %}
+        <p style="padding-left: 40px">Rango says: <strong>thank you for registering!</strong></p>
+
+    <a href="{% url 'rango:index' %}">Return to the homepage.</a><br />
+    {% else %}
+    Rango says: <strong>register here!</strong><br />
+        <div class="container">
+                <form id="user_form" method="post" action="{% url 'rango:register' %}"
+                enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+
+                <input type="submit" class="btn btn-primary" name="submit" value="Register" />
+            </form>
+
+        </div>
+
+
+</div>
+
+
+
+
+{% endif %}
+{% endblock %}

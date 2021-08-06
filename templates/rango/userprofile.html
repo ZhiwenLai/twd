@@ -1,0 +1,50 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+   userprofile
+{% endblock %}
+{% block css %}
+     <style type="text/css">
+        .userlist{
+                    float: left;
+                    padding: 30px;
+                    width: 200px;
+             }
+    </style>
+{% endblock %}
+{% block body_block %}
+
+
+    <div class="row" style="margin-top: 70px">
+            <div class="col-xs-3" >
+                <h3 style="text-align: center">{{ current_user.user }}</h3>
+                <img class="img-responsive" src="{{ MEDIA_URL }}{{ current_user.picture }}">
+            </div>
+
+            <div class="col-xs-9">
+                    <h3>Collection List</h3>
+                    <ul class="userlist" style="list-style: none">
+                        {% for item in clt %}
+{#                            {% if current_user.user == item.clt_who %}#}
+
+                                <li class="userlist" >
+                                  <a href="{% url 'rango:doginfo' item.clt_dogid %}">
+                                      <img class="img-responsive" src="{{ MEDIA_URL }}{{ item.clt_image }}">
+
+                                  </a>
+                                    <div>
+                                        <p style="text-align: center">{{ item.clt_breedname }}</p>
+                                      </div>
+                                </li>
+{#                             {% endif %}#}
+
+
+
+                        {% endfor %}
+                    </ul>
+
+            </div>
+    </div>
+
+{% endblock %}

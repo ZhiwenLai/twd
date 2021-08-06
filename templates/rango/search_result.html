@@ -1,0 +1,79 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Homepage
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <style type="text/css">
+     .doglist{
+            float: left;
+            padding: 30px;
+            {#padding-top: 30px;#}
+            width: 300px;
+            height: 300px;
+     }
+    </style>
+{% endblock %}
+{% block body_block %}
+
+    <div class="jumbotron" style="height: 600px; background-image:url({% static 'images/dog.jpg' %}) ;background-size: 100% 100%;margin-bottom:-20px;">
+      <div class="container-fluid" style="text-align: center">
+          <div class="col-lg-3"></div>
+          <div class="col-lg-6">
+              <form method="get" action="{% url 'rango:search' %}">
+                <div class="input-group">
+                  <input type="text" name="q" class="form-control" placeholder="Search for...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                  </span>
+                </div><!-- /input-group -->
+             </form>
+          </div>
+          <div class="row">
+            <div class="col-xs-1"></div>
+           <div class="col-xs-5">
+            <h1><font color="white">A dog is the only creature that loves you more than you love yourself</font></h1>
+               <a class="btn btn-primary btn-lg" href="{% url 'rango:register' %}" role="button">sign up</a>
+            </div>
+            <div class="col-xs-3">
+            </div>
+        </div>
+
+          <div class="row" style="margin-top: 70px">
+            <div >
+                <ul class="nav nav-tabs nav-justified" >
+                    <li><a href="{% url 'rango:smalldog' %}" style="color: black">SmallDog</a></li>
+                    <li><a href="{% url 'rango:mediumdog' %}" style="color: black">MediumDog</a></li>
+                    <li><a href="{% url 'rango:bigdog' %}" style="color: black">BigDog</a></li>
+                </ul>
+                <ul style="list-style:none;">
+                        {% for post in post_list %}
+
+                            <li class="doglist">
+                              <a href="{% url 'rango:doginfo' post.id  %}">
+                                  <img class="img-responsive" src="{{ MEDIA_URL }}{{ post.image }}">
+
+                              </a>
+                                <div>
+                                    <h3>{{ post.breedname }}</h3>
+                                  </div>
+
+                            </li>
+
+                        {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+      </div>
+
+
+
+    </div>
+{% endblock %}

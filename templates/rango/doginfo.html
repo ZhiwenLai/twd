@@ -1,0 +1,144 @@
+{% extends 'rango/base.html' %}
+
+{% load staticfiles %}
+{% block title_block %}
+    Login
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+
+{% endblock %}
+
+
+{% block body_block %}
+    <div class="container-fluid">
+
+        <ol class="breadcrumb">
+          <li><a href="{% url 'rango:index' %}">Home</a></li>
+          <li class="active">Data</li>
+        </ol>
+        <div class="row">
+            <div class="col-md-9">
+                    <h1>{{ breedname }}</h1>
+                <div class="row">
+                    <div class="col-xs-4"><img class="img-responsive" src="{{ MEDIA_URL }}{{ image }}"></div>
+                    <div class="col-xs-8">
+                        <div style="float: right">
+
+                            <form action="{% url 'rango:clt'%}" method="post">
+                                {% csrf_token %}
+                                     <input type="text" style="display:none"  name="dogid" value="{{ id }}" class="form-control" >
+                                     <input type="text" style="display:none" name="who" value="{{ user.username }}" class="form-control" >
+                                     <input type="text" style="display:none"  name="des" value="{{ description }}" class="form-control">
+                                     <input type="text" style="display:none"  name="name" value="{{ breedname }}" class="form-control">
+                                    <input type="text" style="display:none"  name="img" value="{{ image }}" class="form-control">
+                                <input type="submit" value="Liked" class="btn btn-primary">
+
+                            </form>
+                        </div>
+
+                        {{ description }}
+                    </div>
+
+                </div>
+                <br><hr>
+
+                <div>
+
+{#                {% if if_collect %}#}
+{#                    <p>colleted</p>#}
+{#                {% else %}#}
+{#                {% endif %}#}
+
+                    <h3 style="text-align: left">comments:</h3>
+                    {% for comment in comments %}
+
+                        <p></p>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">{{ comment.username }}</h3>
+                              </div>
+                            <div class="panel-body">
+                               <div class="well well-sm">{{ comment.content }}</div>
+                                <p>{{ comment.date }}</p>
+                              </div>
+
+
+                        </div>
+
+
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <form class="comment-form"  id="jsStayForm">
+
+                      <div class="form-group">
+                        <input name="username" type="hidden" class="form-name"  id="js-name" value="{{ user.username }}" >
+                      </div>
+                      <div class="form-group">
+                        <label class="comment">your comment:</label>
+                        <textarea name="content" class="form-control" id="js-content" rows="5" placeholder="no more than 300 words"></textarea>
+
+                      </div>
+
+                        <button class="btn" type="button" id="jsStayBtn" value="submit">submit</button>
+                    </form>
+                </div>
+
+        </div>
+            <div class="col-md-3" style="text-align: center">
+                <h3>salesinformation</h3>
+                <hr>
+                <ul style="list-style: none" >
+                    {% for list in saleslist %}
+                        <li  ><img class="img-responsive" src="{{ MEDIA_URL }}{{ list.image }}"></li>
+                        <li style=" font-weight: 800;text-align: center">BASIC INFO</li>
+                        <li style="text-align: center">{{ list.color }}</li>
+                        <li style="text-align: center">{{ list.gender }}</li>
+                        <li style="font-weight: 800;text-align: center">PRICE:</li>
+                        <li style="text-align: center">{{ list.price }}</li>
+                        <li style="font-weight: 800;text-align: center">CONTACT:</li>
+                        <li style="text-align: center">+86&nbsp;{{ list.contactnumber }}</li>
+                        <li style="font-weight: 800;text-align: center">DESCIRBE:</li>
+                        <li style="text-align: center">{{ list.description }}</li>
+
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+
+
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+
+        $(function () {
+                       bindSubmit();
+            });
+             function bindSubmit()	{
+                    $('#jsStayBtn').click(function(){
+
+                        $.ajax({
+                            type: "POST",
+                            url:"{% url 'rango:add_comment' %}",
+                            data:$('#jsStayForm').serialize(),
+                            dateType:"JSON",
+                                success:function(res){
+                                     console.log(res)
+                                    location.href = location.href;
+                            }
+                        });
+                    });
+             }
+
+    </script>
+{% endblock %}
+
